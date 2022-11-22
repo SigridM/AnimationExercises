@@ -45,6 +45,31 @@ struct VerticallyStacked: ViewModifier {
     }
 }
 
+struct Rotation3DModifier: AnimatableModifier {
+    var value: Double
+    let direction: Double
+    
+    var animatableData: Double {
+        get {value}
+        set {value = newValue}
+    }
+    
+    func body(content: Content) -> some View {
+        let degrees = Angle(degrees: 70 * value * direction)
+        return content
+            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0))
+    }
+}
+
+extension AnyTransition {
+    static func horizontalRotation(direction: Double) -> AnyTransition {
+        AnyTransition.modifier(
+            active: Rotation3DModifier(value: 1, direction: direction),
+            identity: Rotation3DModifier(value: 0, direction: direction)
+        )
+    }
+}
+
 /// A struct for encapsulating the constants in this Animation
 struct CardConstants {
     static let aspectRatio = 2.0/3.0
@@ -69,6 +94,35 @@ struct CardConstants {
     static let cumulativeDealDelay = totalDealTime / Double(totalCards)
 }
 
+struct RotatableCard: View {
+    let number: Int
+    var tiltAngle: CGFloat
+    var moveAmount: CGFloat
+    @Namespace var theNamespace
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
+                .foregroundColor(CardConstants.cardColor)
+                .frame(width: CardConstants.cardWidth, height: CardConstants.cardHeight)
+                .shadow(radius: CardConstants.shadowRadius,
+                        x: CardConstants.shadowOffset,
+                        y: CardConstants.shadowOffset)
+            Text("\(number + 1)")
+                .font(CardConstants.cardFont)
+                .foregroundColor(CardConstants.textColor)
+                .frame(width: CardConstants.cardWidth,
+                       height: CardConstants.cardHeight,
+                       alignment: CardConstants.textAlignment)
+            
+        }
+        .zIndex(Double(number) * -1)
+        .cardRotationOffset(degrees: tiltAngle, offset: moveAmount)
+        .animation(.easeInOut, value: tiltAngle)
+//        .matchedGeometryEffect(id: "card\(number)", in: theNamespace)
+
+    }
+}
 
 struct ContentView: View {
     
@@ -84,7 +138,7 @@ struct ContentView: View {
     /// during transition animation.
     /// - Parameter index: Where the card is in the stack
     /// - Returns: a View encompasing both the rectangle background and the numbered-text foreground
-    func card(numbered index: Int) -> some View {
+    func card(numbered index: Int, tiltAngle degrees: CGFloat, moveAmount: CGFloat, isSource: Bool) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
                 .foregroundColor(CardConstants.cardColor)
@@ -98,12 +152,17 @@ struct ContentView: View {
                 .frame(width: CardConstants.cardWidth,
                        height: CardConstants.cardHeight,
                        alignment: CardConstants.textAlignment)
-            
+
         }
         .zIndex(Double(index) * -1)
-        .transition(AnyTransition.identity) // takes away any default fade-ins/outs, since we want
-                                            // to use the matchedGeometryEffect for the transitions
-        .matchedGeometryEffect(id: "card\(index)", in: switchingNamespace)
+//        .transition(.identity)// takes away any default fade-ins/outs, since we want
+        // to use the matchedGeometryEffect for the transitions
+//        .transition(AnyTransition.horizontalRotation.combined(with: AnyTransition.move(edge: .top)))
+//        .cardRotation(degrees: degrees)
+        .matchedGeometryEffect(id: "card\(index)", in: switchingNamespace, isSource: isSource)
+        .cardRotationOffset(degrees: degrees, offset: moveAmount)
+        .animation(.easeInOut(duration: 1.0), value: moveAmount)
+//        .animation(nil, value: degrees)
     }
     
     
@@ -111,7 +170,7 @@ struct ContentView: View {
     /// the tableau of dealt cards. Any tap on this ZStack will toggle between the two states.
     var body: some View {
         ZStack {
-            if tableau.count > 0 {
+//            if tableau.count > 0 {
                 // show the dealt cards as a LazyVGrid, pushed to the top of the available space
                 // with a Spacer at the bottom
                 VStack {
@@ -119,7 +178,10 @@ struct ContentView: View {
                         ForEach(0..<CardConstants.totalCards, id: \.self) { index in
                             // only show the card in the LazyVGrid if it has been dealt
                             if isDealt(index) {
-                                card(numbered: index)
+                                card(numbered: index, tiltAngle: 0.0, moveAmount: 0.0, isSource: true)
+//                                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+//                                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+                                    .transition(.horizontalRotation(direction: 0).combined(with: .move(edge: .bottom)))
                             } else {
                                 Color.clear
                             }
@@ -127,7 +189,7 @@ struct ContentView: View {
                     }
                     Spacer()
                 }
-            } else {
+//            } else {
                 // show the deck of undealt cards, pushed to the bottom of the available space
                 // with a Spacer at the top. Make sure it takes up all the available width, or
                 // the cards will "float" sideways during the deal
@@ -135,16 +197,14 @@ struct ContentView: View {
                     Spacer()
                     deck
                 }
-                .frame(maxWidth: .infinity)
-            }
+//                .frame(maxWidth: .infinity)
+//            }
         }
         .padding() // push the whole ZStack slightly away from the edges of the screen
         .onTapGesture {
-            if tableau.count == 0 { // nothing is yet dealt; deal, with animation
-                for i in 0..<CardConstants.totalCards {
-                    withAnimation(dealAnimation(for: i))  {
-                        deal(i)
-                    }
+            if tableau.count < CardConstants.totalCards { //all are not yet dealt; deal one, with animation
+                withAnimation(dealAnimation(for: tableau.count))  {
+                    deal(tableau.count)
                 }
 
             } else { // one or more are dealt; put the cards back into the deck,
@@ -156,7 +216,7 @@ struct ContentView: View {
         }
 //                .background(.pink) // show the background (for debugging purposes)
         // rotate the entire view based on the number of cards that have been dealt
-        .rotation3DEffect(Angle.degrees(currentRotation), axis: (x: 1, y: 0, z: 0))
+//        .rotation3DEffect(Angle.degrees(currentRotation), axis: (x: 1, y: 0, z: 0))
 
 //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 0 : 0 ), axis: (x: 1, y: 0, z: 0))
 //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 70 : 0 ), axis: (x: 1, y: 0, z: 0))
@@ -175,8 +235,14 @@ struct ContentView: View {
     private var deck: some View {
         ZStack {
             ForEach(0..<CardConstants.totalCards, id: \.self) { index in
-                card(numbered: index)
+                let tilt = isDealt(index) ? 0.0 : 70.0
+                let offset = isDealt(index) ? -400.0 : 0.0
+                card(numbered: index, tiltAngle: tilt, moveAmount: offset, isSource: true)
+                    .opacity(isDealt(index) ? 0 : 1)
+                    .animation(nil, value: 1)
                     .verticallyStacked(at: Double(index), in: Double(CardConstants.totalCards))
+                    .transition(.horizontalRotation(direction: 1).combined(with: .move(edge: .bottom)))
+
             }
         }
     }
@@ -186,7 +252,14 @@ struct ContentView: View {
     ///   - cardIndex: the position of the card within the deck
     /// - Returns: a spring Animation, delayed according to the card's position.
     private func dealAnimation(for cardIndex: Int) -> Animation {
-        let delay = Double(cardIndex) * CardConstants.cumulativeDealDelay
+//        let delay = Double(cardIndex) * CardConstants.cumulativeDealDelay
+        var delay: Double
+        
+        if cardIndex % 2 == 0 {
+            delay = 2.0
+        } else {
+            delay = 0.0
+        }
         return Animation.spring(response: 1, dampingFraction: 1, blendDuration: 1).delay(delay)
     }
     
