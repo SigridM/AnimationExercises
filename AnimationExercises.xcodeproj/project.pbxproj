@@ -14,6 +14,19 @@
 		05BB7C6129197440005D4C5D /* AnimationExercisesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C6029197440005D4C5D /* AnimationExercisesTests.swift */; };
 		05BB7C6B29197440005D4C5D /* AnimationExercisesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C6A29197440005D4C5D /* AnimationExercisesUITests.swift */; };
 		05BB7C6D29197440005D4C5D /* AnimationExercisesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C6C29197440005D4C5D /* AnimationExercisesUITestsLaunchTests.swift */; };
+		05BB7C7A29243620005D4C5D /* SingleCardAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C7929243620005D4C5D /* SingleCardAnimation.swift */; };
+		05BB7C7C2925316A005D4C5D /* Rotation3DXEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C7B2925316A005D4C5D /* Rotation3DXEffect.swift */; };
+		05BB7C7E292D395B005D4C5D /* Rotation3DXOffsetYEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C7D292D395B005D4C5D /* Rotation3DXOffsetYEffect.swift */; };
+		05BB7C80292D398C005D4C5D /* SkewedOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C7F292D398C005D4C5D /* SkewedOffsetEffect.swift */; };
+		05BB7C82292D3A4C005D4C5D /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C81292D3A4C005D4C5D /* Preview.swift */; };
+		05BB7C84292D3F9E005D4C5D /* ExampleSkew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C83292D3F9E005D4C5D /* ExampleSkew.swift */; };
+		05BB7C86292D3FE7005D4C5D /* ExampleRotateOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C85292D3FE7005D4C5D /* ExampleRotateOffset.swift */; };
+		05BB7C88292D4222005D4C5D /* VerticallyStackedModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C87292D4222005D4C5D /* VerticallyStackedModifier.swift */; };
+		05BB7C8A292D47EF005D4C5D /* Rotation3DXModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C89292D47EF005D4C5D /* Rotation3DXModifier.swift */; };
+		05BB7C8C292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C8B292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift */; };
+		05BB7C8E292D6FC0005D4C5D /* CardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C8D292D6FC0005D4C5D /* CardConstants.swift */; };
+		05BB7C90292D6FF7005D4C5D /* RotatableCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C8F292D6FF7005D4C5D /* RotatableCard.swift */; };
+		05BB7C92292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +57,19 @@
 		05BB7C6629197440005D4C5D /* AnimationExercisesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimationExercisesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		05BB7C6A29197440005D4C5D /* AnimationExercisesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExercisesUITests.swift; sourceTree = "<group>"; };
 		05BB7C6C29197440005D4C5D /* AnimationExercisesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExercisesUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		05BB7C7929243620005D4C5D /* SingleCardAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCardAnimation.swift; sourceTree = "<group>"; };
+		05BB7C7B2925316A005D4C5D /* Rotation3DXEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotation3DXEffect.swift; sourceTree = "<group>"; };
+		05BB7C7D292D395B005D4C5D /* Rotation3DXOffsetYEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotation3DXOffsetYEffect.swift; sourceTree = "<group>"; };
+		05BB7C7F292D398C005D4C5D /* SkewedOffsetEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkewedOffsetEffect.swift; sourceTree = "<group>"; };
+		05BB7C81292D3A4C005D4C5D /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Preview.swift; path = AnimationExercises/Preview.swift; sourceTree = "<group>"; };
+		05BB7C83292D3F9E005D4C5D /* ExampleSkew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSkew.swift; sourceTree = "<group>"; };
+		05BB7C85292D3FE7005D4C5D /* ExampleRotateOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffset.swift; sourceTree = "<group>"; };
+		05BB7C87292D4222005D4C5D /* VerticallyStackedModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticallyStackedModifier.swift; sourceTree = "<group>"; };
+		05BB7C89292D47EF005D4C5D /* Rotation3DXModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotation3DXModifier.swift; sourceTree = "<group>"; };
+		05BB7C8B292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffsetTransition.swift; sourceTree = "<group>"; };
+		05BB7C8D292D6FC0005D4C5D /* CardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardConstants.swift; sourceTree = "<group>"; };
+		05BB7C8F292D6FF7005D4C5D /* RotatableCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatableCard.swift; sourceTree = "<group>"; };
+		05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffsetTransitionMatched.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +100,8 @@
 		05BB7C432919743E005D4C5D = {
 			isa = PBXGroup;
 			children = (
+				05BB7C81292D3A4C005D4C5D /* Preview.swift */,
+				05BB7C7929243620005D4C5D /* SingleCardAnimation.swift */,
 				05BB7C4E2919743E005D4C5D /* AnimationExercises */,
 				05BB7C5F29197440005D4C5D /* AnimationExercisesTests */,
 				05BB7C6929197440005D4C5D /* AnimationExercisesUITests */,
@@ -96,6 +124,17 @@
 			children = (
 				05BB7C4F2919743E005D4C5D /* AnimationExercisesApp.swift */,
 				05BB7C512919743E005D4C5D /* ContentView.swift */,
+				05BB7C8F292D6FF7005D4C5D /* RotatableCard.swift */,
+				05BB7C8D292D6FC0005D4C5D /* CardConstants.swift */,
+				05BB7C85292D3FE7005D4C5D /* ExampleRotateOffset.swift */,
+				05BB7C8B292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift */,
+				05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */,
+				05BB7C83292D3F9E005D4C5D /* ExampleSkew.swift */,
+				05BB7C7B2925316A005D4C5D /* Rotation3DXEffect.swift */,
+				05BB7C89292D47EF005D4C5D /* Rotation3DXModifier.swift */,
+				05BB7C7D292D395B005D4C5D /* Rotation3DXOffsetYEffect.swift */,
+				05BB7C7F292D398C005D4C5D /* SkewedOffsetEffect.swift */,
+				05BB7C87292D4222005D4C5D /* VerticallyStackedModifier.swift */,
 				05BB7C532919743F005D4C5D /* Assets.xcassets */,
 				05BB7C552919743F005D4C5D /* Preview Content */,
 			);
@@ -258,7 +297,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				05BB7C522919743E005D4C5D /* ContentView.swift in Sources */,
+				05BB7C7C2925316A005D4C5D /* Rotation3DXEffect.swift in Sources */,
+				05BB7C84292D3F9E005D4C5D /* ExampleSkew.swift in Sources */,
+				05BB7C8A292D47EF005D4C5D /* Rotation3DXModifier.swift in Sources */,
+				05BB7C92292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift in Sources */,
+				05BB7C88292D4222005D4C5D /* VerticallyStackedModifier.swift in Sources */,
+				05BB7C86292D3FE7005D4C5D /* ExampleRotateOffset.swift in Sources */,
+				05BB7C7E292D395B005D4C5D /* Rotation3DXOffsetYEffect.swift in Sources */,
+				05BB7C7A29243620005D4C5D /* SingleCardAnimation.swift in Sources */,
+				05BB7C82292D3A4C005D4C5D /* Preview.swift in Sources */,
+				05BB7C8E292D6FC0005D4C5D /* CardConstants.swift in Sources */,
+				05BB7C90292D6FF7005D4C5D /* RotatableCard.swift in Sources */,
+				05BB7C80292D398C005D4C5D /* SkewedOffsetEffect.swift in Sources */,
 				05BB7C502919743E005D4C5D /* AnimationExercisesApp.swift in Sources */,
+				05BB7C8C292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

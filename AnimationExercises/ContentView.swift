@@ -7,123 +7,6 @@
 
 import SwiftUI
 
-extension View {
-    /// Wraps offsets around the content so that it appears vertically stacked. Includes a zIndex so that the view at the "top" of the
-    /// stack -- the lowest position -- will continue to appear at the top of the stack if the entire stack is embedded in a ZStack
-    /// - Parameters:
-    ///   - position: the location of the view within the stack. Lower numbers are at the top of the stack.
-    ///   - total: the size of the entire stack of views,
-    ///   - spacing: the distance between the views in the stack; defaulting to 5
-    /// - Returns: a View, modified with offsets and zIndex set
-    func verticallyStacked(at position: Double, in total: Double, spacing: Double = 5) -> some View {
-        modifier(VerticallyStacked(position: position, total: total, spacing: spacing))
-    }
-}
-
-/// A ViewModifier that sets the offset and zIndex of a view within a total number of views so as to make them appear vertically stacked
-/// in physical space.
-struct VerticallyStacked: ViewModifier {
-    /// The location of the view within the stack. Lower numbers are closer to the top of the stack.
-    var position: Double
-    /// The total number of views in the stack. This allows a calculation to make sure that the offset goes *up*; i.e., views do not go
-    /// farther and farther down the screen the more you have in the stack. Also used, *negated* for the zIndex so the zIndex gets
-    /// farther from the user the higher the position.
-    var total: Double
-    /// The distance between the views in the stack; defaulting to 5.
-    var spacing: Double = 5
-    
-    /// Modifies the content view to be offset and stacked within a total number of views in the stack
-    /// - Parameter content: the single View being stacked
-    /// - Returns: the modified View, offset to appear stacked within a group of views.
-    func body(content: Content) -> some View {
-        //        let offset = Double(total - position)
-
-        let offset = Double(position - total)
-        content
-            .offset(x: 0, y: offset * spacing)
-            .zIndex(position * -1)
-    }
-}
-
-struct Rotation3DModifier: AnimatableModifier {
-    var value: Double
-    let direction: Double
-    
-    var animatableData: Double {
-        get {value}
-        set {value = newValue}
-    }
-    
-    func body(content: Content) -> some View {
-        let degrees = Angle(degrees: 70 * value * direction)
-        return content
-            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0))
-    }
-}
-
-extension AnyTransition {
-    static func horizontalRotation(direction: Double) -> AnyTransition {
-        AnyTransition.modifier(
-            active: Rotation3DModifier(value: 1, direction: direction),
-            identity: Rotation3DModifier(value: 0, direction: direction)
-        )
-    }
-}
-
-/// A struct for encapsulating the constants in this Animation
-struct CardConstants {
-    static let aspectRatio = 2.0/3.0
-    static let cardHeight = 90.0
-    static let cardWidth = cardHeight*aspectRatio
-    
-    static let shadowRadius = 1.0
-    static let shadowOffset = 2.0
-    
-    static let cardColor = Color(.yellow)
-    static let textColor = Color(.black)
-    
-    static let cornerRadius = 10.0
-    static let cardFont = Font.title
-    static let textAlignment = Alignment.center
-    
-    static let totalCards = 10
-    
-    static let initialRotation = 70.0
-    
-    static private let totalDealTime = 2.0
-    static let cumulativeDealDelay = totalDealTime / Double(totalCards)
-}
-
-struct RotatableCard: View {
-    let number: Int
-    var tiltAngle: CGFloat
-    var moveAmount: CGFloat
-    @Namespace var theNamespace
-    
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
-                .foregroundColor(CardConstants.cardColor)
-                .frame(width: CardConstants.cardWidth, height: CardConstants.cardHeight)
-                .shadow(radius: CardConstants.shadowRadius,
-                        x: CardConstants.shadowOffset,
-                        y: CardConstants.shadowOffset)
-            Text("\(number + 1)")
-                .font(CardConstants.cardFont)
-                .foregroundColor(CardConstants.textColor)
-                .frame(width: CardConstants.cardWidth,
-                       height: CardConstants.cardHeight,
-                       alignment: CardConstants.textAlignment)
-            
-        }
-        .zIndex(Double(number) * -1)
-        .cardRotationOffset(degrees: tiltAngle, offset: moveAmount)
-        .animation(.easeInOut, value: tiltAngle)
-//        .matchedGeometryEffect(id: "card\(number)", in: theNamespace)
-
-    }
-}
-
 struct ContentView: View {
     
     @Namespace private var switchingNamespace
@@ -157,10 +40,10 @@ struct ContentView: View {
         .zIndex(Double(index) * -1)
 //        .transition(.identity)// takes away any default fade-ins/outs, since we want
         // to use the matchedGeometryEffect for the transitions
-//        .transition(AnyTransition.horizontalRotation.combined(with: AnyTransition.move(edge: .top)))
-//        .cardRotation(degrees: degrees)
+//        .transition(.rotate3DXtransition.combined(with: .move(edge: .top)))
+//        .rotate3DX(degrees: degrees)
         .matchedGeometryEffect(id: "card\(index)", in: switchingNamespace, isSource: isSource)
-        .cardRotationOffset(degrees: degrees, offset: moveAmount)
+        .rotate3DX(degrees: degrees, yOffset: moveAmount)
         .animation(.easeInOut(duration: 1.0), value: moveAmount)
 //        .animation(nil, value: degrees)
     }
@@ -169,8 +52,11 @@ struct ContentView: View {
     /// Create the main body of the view as a ZStack, sometimes showing the deck of undealt cards, sometimes showing
     /// the tableau of dealt cards. Any tap on this ZStack will toggle between the two states.
     var body: some View {
-        ZStack {
-//            if tableau.count > 0 {
+        if true {
+            ExampleRotateOffsetTransitionMatched()
+        } else {
+            ZStack {
+                //            if tableau.count > 0 {
                 // show the dealt cards as a LazyVGrid, pushed to the top of the available space
                 // with a Spacer at the bottom
                 VStack {
@@ -179,9 +65,9 @@ struct ContentView: View {
                             // only show the card in the LazyVGrid if it has been dealt
                             if isDealt(index) {
                                 card(numbered: index, tiltAngle: 0.0, moveAmount: 0.0, isSource: true)
-//                                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
-//                                    .transition(.asymmetric(insertion: .identity, removal: .identity))
-                                    .transition(.horizontalRotation(direction: 0).combined(with: .move(edge: .bottom)))
+                                //                                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+                                //                                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+                                    .transition(.rotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .bottom)))
                             } else {
                                 Color.clear
                             }
@@ -189,7 +75,7 @@ struct ContentView: View {
                     }
                     Spacer()
                 }
-//            } else {
+                //            } else {
                 // show the deck of undealt cards, pushed to the bottom of the available space
                 // with a Spacer at the top. Make sure it takes up all the available width, or
                 // the cards will "float" sideways during the deal
@@ -197,29 +83,30 @@ struct ContentView: View {
                     Spacer()
                     deck
                 }
-//                .frame(maxWidth: .infinity)
-//            }
-        }
-        .padding() // push the whole ZStack slightly away from the edges of the screen
-        .onTapGesture {
-            if tableau.count < CardConstants.totalCards { //all are not yet dealt; deal one, with animation
-                withAnimation(dealAnimation(for: tableau.count))  {
-                    deal(tableau.count)
-                }
-
-            } else { // one or more are dealt; put the cards back into the deck,
-                     // taking them off the tableau
-                withAnimation {
-                    reset()
+                //                .frame(maxWidth: .infinity)
+                //            }
+            }
+            .padding() // push the whole ZStack slightly away from the edges of the screen
+            .onTapGesture {
+                if tableau.count < CardConstants.totalCards { //all are not yet dealt; deal one, with animation
+                    withAnimation(dealAnimation(for: tableau.count))  {
+                        deal(tableau.count)
+                    }
+                    
+                } else { // one or more are dealt; put the cards back into the deck,
+                         // taking them off the tableau
+                    withAnimation {
+                        reset()
+                    }
                 }
             }
+            //                .background(.pink) // show the background (for debugging purposes)
+            // rotate the entire view based on the number of cards that have been dealt
+            //        .rotation3DEffect(Angle.degrees(currentRotation), axis: (x: 1, y: 0, z: 0))
+            
+            //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 0 : 0 ), axis: (x: 1, y: 0, z: 0))
+            //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 70 : 0 ), axis: (x: 1, y: 0, z: 0))
         }
-//                .background(.pink) // show the background (for debugging purposes)
-        // rotate the entire view based on the number of cards that have been dealt
-//        .rotation3DEffect(Angle.degrees(currentRotation), axis: (x: 1, y: 0, z: 0))
-
-//        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 0 : 0 ), axis: (x: 1, y: 0, z: 0))
-//        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 70 : 0 ), axis: (x: 1, y: 0, z: 0))
 
     }
     
@@ -241,7 +128,7 @@ struct ContentView: View {
                     .opacity(isDealt(index) ? 0 : 1)
                     .animation(nil, value: 1)
                     .verticallyStacked(at: Double(index), in: Double(CardConstants.totalCards))
-                    .transition(.horizontalRotation(direction: 1).combined(with: .move(edge: .bottom)))
+                    .transition(.rotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .bottom)))
 
             }
         }
@@ -283,8 +170,3 @@ struct ContentView: View {
     
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
