@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Namespace private var switchingNamespace
+    @State private var useExample = true
     
     /// The set of cards that have currently been dealt onto the tableau
     @State private var tableau = Set<Int>()
@@ -38,22 +39,16 @@ struct ContentView: View {
 
         }
         .zIndex(Double(index) * -1)
-//        .transition(.identity)// takes away any default fade-ins/outs, since we want
-        // to use the matchedGeometryEffect for the transitions
-//        .transition(.rotate3DXtransition.combined(with: .move(edge: .top)))
-//        .rotate3DX(degrees: degrees)
-        .matchedGeometryEffect(id: "card\(index)", in: switchingNamespace, isSource: isSource)
-        .rotate3DX(degrees: degrees, yOffset: moveAmount)
-        .animation(.easeInOut(duration: 1.0), value: moveAmount)
-//        .animation(nil, value: degrees)
+        .matchedGeometryEffect(id: index, in: switchingNamespace)
+
     }
     
     
     /// Create the main body of the view as a ZStack, sometimes showing the deck of undealt cards, sometimes showing
     /// the tableau of dealt cards. Any tap on this ZStack will toggle between the two states.
     var body: some View {
-        if true {
-            ExampleRotateOffsetTransitionMatched()
+        if useExample {
+            ExampleRotateOffsetTransitionMatched1()
         } else {
             ZStack {
                 //            if tableau.count > 0 {
@@ -65,8 +60,6 @@ struct ContentView: View {
                             // only show the card in the LazyVGrid if it has been dealt
                             if isDealt(index) {
                                 card(numbered: index, tiltAngle: 0.0, moveAmount: 0.0, isSource: true)
-                                //                                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
-                                //                                    .transition(.asymmetric(insertion: .identity, removal: .identity))
                                     .transition(.rotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .bottom)))
                             } else {
                                 Color.clear
@@ -101,11 +94,6 @@ struct ContentView: View {
                 }
             }
             //                .background(.pink) // show the background (for debugging purposes)
-            // rotate the entire view based on the number of cards that have been dealt
-            //        .rotation3DEffect(Angle.degrees(currentRotation), axis: (x: 1, y: 0, z: 0))
-            
-            //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 0 : 0 ), axis: (x: 1, y: 0, z: 0))
-            //        .rotation3DEffect(Angle.degrees(dealt.count == 0 ? 70 : 0 ), axis: (x: 1, y: 0, z: 0))
         }
 
     }
@@ -125,8 +113,6 @@ struct ContentView: View {
                 let tilt = isDealt(index) ? 0.0 : 70.0
                 let offset = isDealt(index) ? -400.0 : 0.0
                 card(numbered: index, tiltAngle: tilt, moveAmount: offset, isSource: true)
-                    .opacity(isDealt(index) ? 0 : 1)
-                    .animation(nil, value: 1)
                     .verticallyStacked(at: Double(index), in: Double(CardConstants.totalCards))
                     .transition(.rotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .bottom)))
 

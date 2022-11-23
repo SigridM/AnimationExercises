@@ -26,9 +26,7 @@ struct Rotation3DXModifier: AnimatableModifier {
     func body(content: Content) -> some View {
         let degrees = Angle(degrees: fullRotation * value)
         return content
-//            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: UnitPoint(x: 0.5, y: 0.9))
-            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0))
-
+            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: UnitPoint(x: 0.5, y: 0.95))
     }
 }
 
@@ -56,6 +54,19 @@ extension AnyTransition {
         AnyTransition.modifier(
             active: Rotation3DXModifier(value: 0, fullRotation: fullRotation),
             identity: Rotation3DXModifier(value: 1, fullRotation: fullRotation)
+        )
+    }
+    
+    static func unrotate3DXTransition(fullRotation: Double) -> AnyTransition {
+        /// Identity is applied when the view is fully inserted in the view hierarchy, and active when the view is gone.
+        /// When the view disappears, we want it to be unrotated
+        /// Put another way: When a view isn't transitioning, the identity modifier is applied. When a view is removed,
+        /// the animation interpolates in between the identity modifier and the active modifier before removing the view completely.
+        /// Likewise, when a view is inserted it starts out with the active modifier at the start of the animation,
+        /// and ends with the identity modifier at the end of the animation.
+        AnyTransition.modifier(
+            active: Rotation3DXModifier(value: 1, fullRotation: fullRotation),
+            identity: Rotation3DXModifier(value: 0, fullRotation: fullRotation)
         )
     }
 }

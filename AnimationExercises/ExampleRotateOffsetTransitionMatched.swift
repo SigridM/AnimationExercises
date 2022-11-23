@@ -20,11 +20,26 @@ struct LabelViewRotateTransitionMatched: View {
             
             CardSimulator(text: text, backgroundColor: backgroundColor)
                 .matchedGeometryEffect(id: "card", in: namespace)
+
         }
         .transition(.rotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .top)))
-//        .matchedGeometryEffect(id: "card", in: namespace)
+    }
+}
 
-//        .background(.pink)
+struct LabelViewUnrotateTransitionMatched: View {
+    let text: String
+    let backgroundColor: Color
+    var namespace: Namespace.ID
+    
+    var body: some View {
+        VStack {
+            CardSimulator(text: text, backgroundColor: backgroundColor)
+                .matchedGeometryEffect(id: "card", in: namespace)
+            Spacer()  // this allows the card to move farther down, with the transition on the
+                      // entire VStack
+            
+        }
+        .transition(.unrotate3DXTransition(fullRotation: 70).combined(with: .move(edge: .bottom)))
     }
 }
 
@@ -43,7 +58,8 @@ struct CardSimulator: View {
                     .foregroundColor(backgroundColor)
                     .shadow(radius: 1, x: 2.0, y: 2.0)
             )
-        .foregroundColor(.black)}
+            .foregroundColor(.black)
+    }
 }
 
 
@@ -56,18 +72,20 @@ struct ExampleRotateOffsetTransitionMatched: View {
         ZStack {
             VStack {
                 if dealt {
-                    CardSimulator(text: "Hello World", backgroundColor: .cyan)
-                        .matchedGeometryEffect(id: "card", in: dealingNamepace)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 2.0)) {
-                                dealt = false
-                            }
+                    LabelViewUnrotateTransitionMatched(
+                        text: "Hello World",
+                        backgroundColor: .cyan,
+                        namespace: dealingNamepace
+                    )
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 2.0)) {
+                            dealt = false
                         }
+                        
+                    }
                 }
-                Spacer()
             }
             VStack {
-                Spacer()
                 if !dealt {
                     LabelViewRotateTransitionMatched(
                         text: "Hello World",
@@ -81,6 +99,7 @@ struct ExampleRotateOffsetTransitionMatched: View {
                     }
                 }
             }
+
         }
     }
 }
