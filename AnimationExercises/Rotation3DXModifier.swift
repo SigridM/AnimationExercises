@@ -26,7 +26,7 @@ struct Rotation3DXModifier: AnimatableModifier {
     func body(content: Content) -> some View {
         let degrees = Angle(degrees: fullRotation * value)
         return content
-            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: UnitPoint(x: 0.5, y: 0.95))
+            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: UnitPoint(x: 0.5, y: 0.5))
     }
 }
 

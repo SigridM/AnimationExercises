@@ -48,7 +48,7 @@ struct ContentView: View {
     /// the tableau of dealt cards. Any tap on this ZStack will toggle between the two states.
     var body: some View {
         if useExample {
-            ExampleRotateOffsetTransitionMatched1()
+            ExampleRotateOffsetTransitionMatchedGrid()
         } else {
             ZStack {
                 //            if tableau.count > 0 {

@@ -18,11 +18,11 @@ struct CardSimulator1: View {
         if isDealt {
             return
                 .unrotate3DXTransition(fullRotation: CardConstants.initialRotation)
-                .combined(with: .move(edge: .bottom))
+//                .combined(with: .move(edge: .bottom))
         } else {
             return
                 .rotate3DXTransition(fullRotation: CardConstants.initialRotation)
-                .combined(with: .move(edge: .top))
+//                .combined(with: .move(edge: .top))
         }
     }
     
@@ -51,6 +51,7 @@ struct CardSimulator1: View {
                 Spacer()
             }
         }
+//        .background(.yellow)
         .transition(transition)
     }
 }

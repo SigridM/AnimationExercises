@@ -28,6 +28,7 @@
 		05BB7C90292D6FF7005D4C5D /* RotatableCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C8F292D6FF7005D4C5D /* RotatableCard.swift */; };
 		05BB7C92292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */; };
 		05C39E9A292EC01000F863BD /* ExampleRotateOffsetTransitionMatched1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C39E99292EC01000F863BD /* ExampleRotateOffsetTransitionMatched1.swift */; };
+		05C39E9C292FB79700F863BD /* ExampleRotateOffsetTransitionMatchedGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C39E9B292FB79700F863BD /* ExampleRotateOffsetTransitionMatchedGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		05BB7C8F292D6FF7005D4C5D /* RotatableCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatableCard.swift; sourceTree = "<group>"; };
 		05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffsetTransitionMatched.swift; sourceTree = "<group>"; };
 		05C39E99292EC01000F863BD /* ExampleRotateOffsetTransitionMatched1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffsetTransitionMatched1.swift; sourceTree = "<group>"; };
+		05C39E9B292FB79700F863BD /* ExampleRotateOffsetTransitionMatchedGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRotateOffsetTransitionMatchedGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				05BB7C8B292D4F76005D4C5D /* ExampleRotateOffsetTransition.swift */,
 				05BB7C91292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift */,
 				05C39E99292EC01000F863BD /* ExampleRotateOffsetTransitionMatched1.swift */,
+				05C39E9B292FB79700F863BD /* ExampleRotateOffsetTransitionMatchedGrid.swift */,
 				05BB7C83292D3F9E005D4C5D /* ExampleSkew.swift */,
 				05BB7C7B2925316A005D4C5D /* Rotation3DXEffect.swift */,
 				05BB7C89292D47EF005D4C5D /* Rotation3DXModifier.swift */,
@@ -301,6 +304,7 @@
 			files = (
 				05BB7C522919743E005D4C5D /* ContentView.swift in Sources */,
 				05BB7C7C2925316A005D4C5D /* Rotation3DXEffect.swift in Sources */,
+				05C39E9C292FB79700F863BD /* ExampleRotateOffsetTransitionMatchedGrid.swift in Sources */,
 				05BB7C84292D3F9E005D4C5D /* ExampleSkew.swift in Sources */,
 				05BB7C8A292D47EF005D4C5D /* Rotation3DXModifier.swift in Sources */,
 				05BB7C92292E58C1005D4C5D /* ExampleRotateOffsetTransitionMatched.swift in Sources */,
