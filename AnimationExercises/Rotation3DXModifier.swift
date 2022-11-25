@@ -17,6 +17,7 @@ struct Rotation3DXModifier: AnimatableModifier {
     /// How rotated the View is, between 0 and 1: 0 being not rotated, and 1 being fully rotated
     var value: Double
     let fullRotation: Double
+    var offCenterBy: Double = 0.0
     
     var animatableData: Double {
         get {value}
@@ -25,8 +26,9 @@ struct Rotation3DXModifier: AnimatableModifier {
     
     func body(content: Content) -> some View {
         let degrees = Angle(degrees: fullRotation * value)
+        let anchor = UnitPoint(x: 0.5, y: 0.5 + offCenterBy)
         return content
-            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: UnitPoint(x: 0.5, y: 0.5))
+            .rotation3DEffect(degrees, axis: (x: 1, y: 0, z: 0), anchor: anchor)
     }
 }
 
