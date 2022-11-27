@@ -43,36 +43,30 @@ struct ContentView: View {
     /// during transition animation.
     /// - Parameter index: Where the card is in the stack
     /// - Returns: a View encompasing both the rectangle background and the numbered-text foreground
-    func card(numbered index: Int, dealt: Bool = false, animate: Bool = true, change: @escaping ()->()) -> some View {
+    func card(numbered index: Int, dealt: Bool = false, change: @escaping ()->()) -> some View {
         VStack {
             if !dealt {
                 Spacer()
             }
             VStack {
                 ZStack {
-                        RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
-                            .foregroundColor(dealt ? .blue : CardConstants.cardColor)
-                            .frame(width: CardConstants.cardWidth, height: CardConstants.cardHeight)
-                            .shadow(radius: CardConstants.shadowRadius,
-                                    x: CardConstants.shadowOffset,
-                                    y: CardConstants.shadowOffset)
+                    RoundedRectangle(cornerRadius: CardConstants.cornerRadius)
+                        .foregroundColor(CardConstants.cardColor)
+                        .frame(width: CardConstants.cardWidth, height: CardConstants.cardHeight)
+                        .shadow(radius: CardConstants.shadowRadius,
+                                x: CardConstants.shadowOffset,
+                                y: CardConstants.shadowOffset)
 
-                        Text("\(index + 1)")
-                            .font(CardConstants.cardFont)
-                            .foregroundColor(CardConstants.textColor)
+                    Text("\(index + 1)")
+                        .font(CardConstants.cardFont)
+                        .foregroundColor(CardConstants.textColor)
                 }
-                .animation(nil, value: UUID())
                 .zIndex(Double(index + 1) * -1)
-                .onTapGesture {
-                    if animate {
-                        withAnimation(dealAnimation(for: 0)) {
-                            change()
-                        }
-                    } else {
-                        change()
-                    }
-                }
+                .animation(nil, value: UUID())
                 .matchedGeometryEffect(id: "card\(index)", in: switchingNamespace)
+                .onTapGesture {
+                    change()
+                }
             }
         }
         .transition(transition(if: dealt))
@@ -94,13 +88,14 @@ struct ContentView: View {
                             if dealt {
                                 VStack {
                                     card(numbered: index, dealt: true) {
-                                        reset()
+                                        withAnimation() {
+                                            reset()
+                                        }
                                     }
                                 }
                             } else {
                                 Color.clear
                             }
-                                
                         }
                     }
                     Spacer()
@@ -111,7 +106,6 @@ struct ContentView: View {
                 }
             }
             .padding() // push the whole ZStack slightly away from the edges of the screen
-            //                .background(.pink) // show the background (for debugging purposes)
         }
 
     }
@@ -123,7 +117,7 @@ struct ContentView: View {
                 ForEach(0..<CardConstants.totalCards, id: \.self) { index in
                     let dealt = isDealt(index)
                     if !dealt {
-                        card(numbered: index, dealt: false, animate: false) {
+                        card(numbered: index, dealt: false) {
                             deal(min(index, lowestUndealtIndex()), inGroupOf: 3)
                         }
                         .verticallyStacked(at: Double(index), in: Double(CardConstants.totalCards))
@@ -138,8 +132,8 @@ struct ContentView: View {
     ///   - cardIndex: the position of the card within the deck
     /// - Returns: a spring Animation, delayed according to the card's position.
     private func dealAnimation(for cardIndex: Int) -> Animation {
-        let delay = (Double(cardIndex) ) * CardConstants.cumulativeDealDelay
-        return .spring(response: 1, dampingFraction: 1, blendDuration: 0).delay(delay)
+        let delay = (Double(cardIndex)) * CardConstants.cumulativeDealDelay
+        return .spring(response: 1, dampingFraction: 0.8, blendDuration: 0.25).delay(delay)
 //                return .easeInOut.delay(delay)
 
     }
